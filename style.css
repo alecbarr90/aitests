@@ -1,79 +1,40 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+let progressValue = 0;
+let emojiShown = false;
+
+document.addEventListener('click', () => {
+  if (!emojiShown) {
+    // Increment the progress bar by a random value between 2% and 10%.
+    const randomIncrement = Math.floor(Math.random() * 9) + 2;
+    progressValue += randomIncrement;
+
+    if (progressValue > 100) {
+      progressValue = 100;
+      showEmoji();
+      fadeOutPageElements();
+      emojiShown = true;
+    }
+    updateProgressBar();
+  }
+});
+
+function updateProgressBar() {
+  const progressBar = document.getElementById('progressBar');
+  progressBar.style.width = progressValue + '%';
+
+  const percentageLabel = document.getElementById('percentageLabel');
+  percentageLabel.textContent = progressValue + '%';
 }
 
-.progress-container {
-  width: 300px;
-  margin: 20px;
-  text-align: center;
+function showEmoji() {
+  const emojiContainer = document.getElementById('emojiContainer');
+  const emoji = document.createElement('div');
+  emoji.textContent = '🙌';
+  emoji.classList.add('emoji');
+  emojiContainer.appendChild(emoji);
+  emojiContainer.style.display = 'block';
 }
 
-.label {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 30px;
-  background-color: #f1f1f1; /* Light grey background for progress bar container */
-  border: 2px solid #000000;
-  border-radius: 5px;
-  margin-top: 10px;
-  position: relative;
-  overflow: hidden;
-}
-
-.progress {
-  height: 100%;
-  background-color: #f1f1f1; /* Light grey background for progress bar */
-  border-radius: 5px;
-  transition: width 0.3s, background-color 0.3s;
-}
-
-.percentage {
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.emoji-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  z-index: 9999;
-  pointer-events: none;
-}
-
-.emoji {
-  font-size: 160px;
-  opacity: 0;
-  transform-origin: center;
-  animation: growAndSpin 2s forwards, fadeOut 2s 2s forwards;
-}
-
-@keyframes growAndSpin {
-  0% { opacity: 0; transform: scale(0.1) rotate(0deg); }
-  100% { opacity: 1; transform: scale(1) rotate(360deg); }
-}
-
-@keyframes fadeOut {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.fade-out {
-  animation: fadeOut 2s forwards;
-}
-
-@keyframes fadeOut {
-  to { opacity: 0; }
+function fadeOutPageElements() {
+  const elementsToFadeOut = document.querySelectorAll('body > *:not(.emoji-container)');
+  elementsToFadeOut.forEach(element => element.classList.add('fade-out'));
 }
