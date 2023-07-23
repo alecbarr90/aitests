@@ -1,0 +1,41 @@
+let progressValue = 0;
+let emojiShown = false;
+
+document.addEventListener('click', () => {
+  if (!emojiShown) {
+    // Increment the progress bar by a random value between 2% and 10%.
+    const randomIncrement = Math.floor(Math.random() * 9) + 2;
+    progressValue += randomIncrement;
+
+    if (progressValue > 100) {
+      progressValue = 100;
+      showEmoji();
+      fadeOutPageElements();
+      emojiShown = true;
+    }
+    updateProgressBar();
+  }
+});
+
+function updateProgressBar() {
+  const progressBar = document.getElementById('progressBar');
+  progressBar.style.width = progressValue + '%';
+
+  const percentageLabel = document.getElementById('percentageLabel');
+  percentageLabel.textContent = progressValue + '%';
+  progressBar.style.backgroundColor = '#4CAF50'; // Change progress bar color to green
+}
+
+function showEmoji() {
+  const emojiContainer = document.getElementById('emojiContainer');
+  const emoji = document.createElement('div');
+  emoji.textContent = '🙌';
+  emoji.classList.add('emoji');
+  emojiContainer.appendChild(emoji);
+  emojiContainer.style.display = 'block';
+}
+
+function fadeOutPageElements() {
+  const elementsToFadeOut = document.querySelectorAll('body > *:not(.emoji-container)');
+  elementsToFadeOut.forEach(element => element.classList.add('fade-out'));
+}
